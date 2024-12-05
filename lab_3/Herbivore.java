@@ -6,6 +6,7 @@ class Herbivore extends Animal {
 
     public Herbivore(String name, int energy, int x, int y, double survivalRate, int speed) {
         super(name, energy, x, y, survivalRate, speed, "Herbivore");
+        System.out.println("Herbivore \"" + name + "\" added at position (" + x + ", " + y + ") with energy " + energy + ".");
     }
 
     @Override
@@ -21,6 +22,7 @@ class Herbivore extends Animal {
         Plant plant = ecosystem.findNearestPlant(x, y);
         if (plant != null && isNear(plant)) {
             System.out.println(name + " at (" + x + ", " + y + ") eats " + plant.name + "!");
+            ecosystem.getReport().recordInteraction(name + " ate " + plant.name + " at (" + x + ", " + y + ").");
             energy += plant.energy;
             ecosystem.removeEntity(plant);
         }
@@ -32,10 +34,11 @@ class Herbivore extends Animal {
 
     private void reproduce(Ecosystem ecosystem) {
         if (energy > 100) {
-            int newX = x + (new Random().nextInt(3) - 1);
-            int newY = y + (new Random().nextInt(3) - 1);
+            int newX = Math.max(0, Math.min(9, x + (new Random().nextInt(3) - 1)));
+            int newY = Math.max(0, Math.min(9, y + (new Random().nextInt(3) - 1)));
             ecosystem.addEntity(new Herbivore(name + " Offspring", 50, newX, newY, survivalRate, speed));
             energy -= 50;
         }
     }
+
 }

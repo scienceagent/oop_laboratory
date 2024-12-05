@@ -16,7 +16,9 @@ abstract class Animal extends EcosystemEntity {
 
     public void move() {
         Random rand = new Random();
-        x += rand.nextInt(2 * speed + 1) - speed;
-        y += rand.nextInt(2 * speed + 1) - speed;
+        int newX = Math.max(0, Math.min(9, x + rand.nextInt(2 * speed + 1) - speed));
+        int newY = Math.max(0, Math.min(9, y + rand.nextInt(2 * speed + 1) - speed));
+        x = newX;
+        y = newY;
     }
 }

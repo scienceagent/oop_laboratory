@@ -11,13 +11,23 @@ class Ecosystem {
     private final int gridSize = 10;
     private final Random random = new Random();
     private final double randomEventProbability = 0.2;
+    private EcosystemReport report = new EcosystemReport();
 
+    // Method to access the report
+    public EcosystemReport getReport() {
+        return report;
+    }
+
+    // Method to add entities to the ecosystem
     public void addEntity(EcosystemEntity entity) {
         entities.add(entity);
+        report.recordPopulation(entity.getClass().getSimpleName()); // Record population
+        report.recordInteraction(entity.getName() + " added to the ecosystem.");
     }
 
     public void removeEntity(EcosystemEntity entity) {
         entities.remove(entity);
+        report.recordInteraction(entity.getName() + " removed from the ecosystem.");
     }
 
     public Plant findNearestPlant(int x, int y) {
@@ -41,12 +51,11 @@ class Ecosystem {
     }
 
     public void simulateStep() {
-        System.out.println("\n--- Simulation Step ---");
         List<EcosystemEntity> currentEntities = new ArrayList<>(entities);
 
         for (EcosystemEntity entity : currentEntities) {
             if (entity.isAlive()) {
-                entity.act(this);
+                entity.act(this);  // Ensure each entity acts
             }
         }
 
@@ -57,7 +66,7 @@ class Ecosystem {
             triggerRandomEvent();
         }
 
-        displayMatrix();
+     //   displayMatrix();
     }
 
     public void triggerRandomEvent() {
@@ -87,6 +96,7 @@ class Ecosystem {
             if (random.nextDouble() > entity.survivalRate) {
                 System.out.println(entity.name + " was lost in the storm.");
                 entities.remove(entity);
+                report.recordInteraction(entity.name + " was lost in the storm.");
             }
         }
     }
@@ -95,27 +105,41 @@ class Ecosystem {
         System.out.println("\n--- Random Event: New Species Appears! ---");
         int x = random.nextInt(gridSize);
         int y = random.nextInt(gridSize);
-        int energy = 100;
-        double survivalRate = 0.7;
-        int speed = 2;
 
-        Omnivore newOmnivore = new Omnivore("New Omnivore", energy, x, y, survivalRate, speed);
-        addEntity(newOmnivore);
-        System.out.println("A new omnivore species has appeared at (" + x + ", " + y + ").");
+        // Randomly choose the type of new species to introduce
+        int speciesType = random.nextInt(4); // 0: Plant, 1: Herbivore, 2: Omnivore, 3: Carnivore
+        switch (speciesType) {
+            case 0: // New Plant
+                Plant newPlant = new Plant("New Plant", 50, x, y);
+                addEntity(newPlant);
+                System.out.println("A new plant species has appeared at (" + x + ", " + y + ").");
+                break;
+            case 1: // New Herbivore
+                Herbivore newHerbivore = new Herbivore("New Herbivore", 80, x, y, 0.6, 2);
+                addEntity(newHerbivore);
+                System.out.println("A new herbivore species has appeared at (" + x + ", " + y + ").");
+                break;
+            case 2: // New Omnivore
+                Omnivore newOmnivore = new Omnivore("New Omnivore", 100, x, y, 0.7, 2);
+                addEntity(newOmnivore);
+                System.out.println("A new omnivore species has appeared at (" + x + ", " + y + ").");
+                break;
+            case 3: // New Carnivore
+                Carnivore newCarnivore = new Carnivore("New Carnivore", 120, x, y, 0.8, 3);
+                addEntity(newCarnivore);
+                System.out.println("A new carnivore species has appeared at (" + x + ", " + y + ").");
+                break;
+            default:
+                break; // This should never happen
+        }
     }
 
     public void generateFinalReport() {
-        System.out.println("\n--- Final Ecosystem Report ---");
-        Map<String, Long> populationCounts = new HashMap<>();
-
         for (EcosystemEntity entity : entities) {
             String type = entity.getClass().getSimpleName();
-            populationCounts.put(type, populationCounts.getOrDefault(type, 0L) + 1);
+            report.recordPopulation(type);
         }
-
-        for (Map.Entry<String, Long> entry : populationCounts.entrySet()) {
-            System.out.println(entry.getKey() + " population: " + entry.getValue());
-        }
+        report.generateReport();
     }
 
     public void displayState() {
@@ -126,24 +150,27 @@ class Ecosystem {
     }
 
     public void displayMatrix() {
-        char[][] grid = new char[gridSize][gridSize];
+        char[][] grid = new char[gridSize][gridSize]; // Updated grid size
+        System.out.println("\n--- Ecosystem Grid ---");
+
+        // Initialize the grid
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 grid[i][j] = '.';
             }
         }
 
+        // Place entities in the grid
         for (EcosystemEntity entity : entities) {
             if (entity.x >= 0 && entity.x < gridSize && entity.y >= 0 && entity.y < gridSize) {
                 char symbol = entity instanceof Plant ? 'P' :
                               entity instanceof Herbivore ? 'H' :
-                              entity instanceof Carnivore ? 'C' :
-                              'O'; // Omnivore
+                              entity instanceof Carnivore ? 'C' : 'O'; // Omnivore
                 grid[entity.x][entity.y] = symbol;
             }
         }
 
-        System.out.println("\n--- Ecosystem Grid ---");
+        // Display the grid
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 System.out.print(grid[i][j] + " ");

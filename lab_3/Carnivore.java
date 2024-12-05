@@ -6,6 +6,7 @@ class Carnivore extends Animal {
 
     public Carnivore(String name, int energy, int x, int y, double survivalRate, int speed) {
         super(name, energy, x, y, survivalRate, speed, "Carnivore");
+        System.out.println("Carnivore \"" + name + "\" added at position (" + x + ", " + y + ") with energy " + energy + ".");
     }
 
     @Override
@@ -18,11 +19,12 @@ class Carnivore extends Animal {
 
     @Override
     public void eat(Ecosystem ecosystem) {
-        Herbivore prey = ecosystem.findNearestHerbivore(x, y);
-        if (prey != null && isNear(prey)) {
-            System.out.println(name + " at (" + x + ", " + y + ") attacks " + prey.name + "!");
-            energy += prey.energy;
-            ecosystem.removeEntity(prey);
+        Plant plant = ecosystem.findNearestPlant(x, y);
+        if (plant != null && isNear(plant)) {
+            System.out.println(name + " at (" + x + ", " + y + ") eats " + plant.name + "!");
+            ecosystem.getReport().recordInteraction(name + " ate " + plant.name + " at (" + x + ", " + y + ").");
+            energy += plant.energy;
+            ecosystem.removeEntity(plant);
         }
     }
 
@@ -30,12 +32,13 @@ class Carnivore extends Animal {
         return Math.abs(entity.x - x) <= 1 && Math.abs(entity.y - y) <= 1;
     }
 
-    private void reproduce(Ecosystem ecosystem) {
-        if (energy > 150) {
-            int newX = x + (new Random().nextInt(3) - 1);
-            int newY = y + (new Random().nextInt(3) - 1);
-            ecosystem.addEntity(new Carnivore(name + " Cub", 75, newX, newY, survivalRate, speed));
-            energy -= 75;
-        }
+private void reproduce(Ecosystem ecosystem) {
+    if (energy > 150) {
+        int newX = Math.max(0, Math.min(9, x + (new Random().nextInt(3) - 1)));
+        int newY = Math.max(0, Math.min(9, y + (new Random().nextInt(3) - 1)));
+        ecosystem.addEntity(new Carnivore(name + " Cub", 75, newX, newY, survivalRate, speed));
+        energy -= 75;
     }
+}
+
 }

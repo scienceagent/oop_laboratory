@@ -14,9 +14,15 @@ abstract class EcosystemEntity {
         this.survivalRate = survivalRate;
     }
 
-    public abstract void act(Ecosystem ecosystem);
+    public String getName() {
+        return name;
+    }
 
     public boolean isAlive() {
         return energy > 0;
     }
+
+    public abstract void act(Ecosystem ecosystem);
+
+
 }
