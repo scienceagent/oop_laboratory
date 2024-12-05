@@ -48,15 +48,15 @@ The workspace contains two folders by default, where:
 - `act(Ecosystem ecosystem)`: Implements behavior for omnivores, allowing them to consume both plants and herbivores.
 
 ## UML Diagram
-![uml diagram](./lib/uml.png){ style="display: block; margin: 0 auto" }
+![uml diagram](./lib/uml.png)
 
 ## Usage Scenarios
 ### Program menu
-![uml diagram](./lib/menu.png){ style="display: block; margin: 0 auto" }
+![uml diagram](./lib/menu.png)
 ### Program simulation steps
-![uml diagram](./lib/grid.png){ style="display: block; margin: 0 auto" }
+![uml diagram](./lib/grid.png)
 ### Program observed interactions
-![uml diagram](./lib/observation.png){ style="display: block; margin: 0 auto" }
+![uml diagram](./lib/observation.png)
 
 ## Difficulties Encountered
 
