@@ -2,6 +2,20 @@
 
 This project simulates an ecosystem with various entities, such as plants, herbivores, carnivores, and omnivores. The simulation allows for the interaction of these entities within a grid, showcasing how they affect each other's survival and growth.
 
+## Installation Instructions
+Clone the repository:
+```bash
+git clone https://github.com/scienceagent/oop_laboratory.git
+```
+Navigate to the project directory:
+```bash
+cd EcosystemSimulation
+```
+Install dependencies (if any):
+```bash
+npm install
+```
+
 ## Folder Structure
 
 The workspace contains two folders by default, where:
@@ -64,3 +78,7 @@ The workspace contains two folders by default, where:
 |---------|---------|
 |Managing entity interactions during simulation steps.     |   Implemented a clear method for handling interactions and ensuring that entities acted in a defined order.      |
 |Ensuring proper energy management for entities.     |   Developed a consistent method for updating energy levels based on consumption and actions taken.      |
+
+## Future Improvements
+`- Implement a graphical user interface (GUI) for better user interaction.`
+`- Add more complex behaviors and interactions among entities.`
