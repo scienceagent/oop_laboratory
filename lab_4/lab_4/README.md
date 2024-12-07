@@ -80,5 +80,5 @@ The workspace contains two folders by default, where:
 |Ensuring proper energy management for entities.     |   Developed a consistent method for updating energy levels based on consumption and actions taken.      |
 
 ## Future Improvements
-`- Implement a graphical user interface (GUI) for better user interaction.`
+`- Implement a graphical user interface (GUI) for better user interaction.` <br/>
 `- Add more complex behaviors and interactions among entities.`
